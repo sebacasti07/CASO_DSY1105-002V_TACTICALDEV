@@ -5,14 +5,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "visitas")
 data class Visita(
-    @PrimaryKey(autoGenerate = true) val visitaId: Long = 0,
-    val equipoId: String,                  // Referencia a EquipoRefrigeracion.codigoId
-    val usuarioId: String,                 // Referencia al técnico/operario
-    val fechaHora: Long = System.currentTimeMillis(),
-    val localCerrado: Boolean = false,     // Indica si el minimarket estaba cerrado
-    val estadoMaquina: EstadoMaquina,     // Enum con el estado actual
-    val observaciones: String,
-    val fotografiaMinimarket: String?,    // Ruta de la foto del local/minimarket
-    val latitud: Double?,                  // Coordenada GPS
-    val longitud: Double?                  // Coordenada GPS
+    @PrimaryKey
+    val visitaId: String = "",
+    val minimarketId: String = "",
+    val clienteNombre: String = "",
+    val direccion: String = "",
+    val fecha: String = "",
+    val bloqueHorario: String = "",
+    val motivo: String = "",
+    val estado: String = "Pendiente",
+    val observacionesTecnico: String = "",
+    val motivoCancelacion: String = "",
+    val motivoReprogramacion: String = "",
+    val ubicacionGps: String = "",
+    val fotosUrls: String = ""
 )
