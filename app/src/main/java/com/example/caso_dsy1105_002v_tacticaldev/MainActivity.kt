@@ -3,43 +3,47 @@ package com.example.caso_dsy1105_002v_tacticaldev
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.caso_dsy1105_002v_tacticaldev.ui.theme.CASO_DSY1105002V_TACTICALDEVTheme
+import androidx.activity.viewModels
+import androidx.navigation.compose.rememberNavController
+import com.example.caso_dsy1105_002v_tacticaldev.Database.AppDatabase
+import com.example.caso_dsy1105_002v_tacticaldev.Navigation.AppNavGraph
+import com.example.caso_dsy1105_002v_tacticaldev.Repository.EquipoRepository
+import com.example.caso_dsy1105_002v_tacticaldev.Repository.RepuestoRepository
+import com.example.caso_dsy1105_002v_tacticaldev.Repository.UsuarioRepository
+import com.example.caso_dsy1105_002v_tacticaldev.ViewModel.AuthViewModel
+import com.example.caso_dsy1105_002v_tacticaldev.ViewModel.ViewModelFactory
+import com.example.caso_dsy1105_002v_tacticaldev.ui.theme.TacticalDevTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        val database = AppDatabase.getDatabase(this)
+        val usuarioDao = database.usuarioDao()
+        val repuestoDao = database.repuestoDao()
+        val equipoDao = database.equipoDao()
+
+        val usuarioRepository = UsuarioRepository(usuarioDao)
+        val repuestoRepository = RepuestoRepository(repuestoDao)
+        val equipoRepository = EquipoRepository(equipoDao)
+
+        val factory = ViewModelFactory(
+            usuarioDao = usuarioDao,
+            repuestoRepository = repuestoRepository,
+            equipoRepository = equipoRepository,
+            usuarioRepository = usuarioRepository
+        )
+
+        val authViewModel: AuthViewModel by viewModels { factory }
+
         setContent {
-            CASO_DSY1105002V_TACTICALDEVTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    androidx.compose.foundation.layout.Box(
-                        modifier = Modifier.padding(innerPadding)
-                }
+            TacticalDevTheme {
+                val navController = rememberNavController()
+                AppNavGraph(
+                    navController = navController,
+                    authViewModel = authViewModel
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CASO_DSY1105002V_TACTICALDEVTheme {
-        Greeting("Android")
     }
 }

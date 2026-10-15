@@ -23,7 +23,7 @@ class AdminUsuariosViewModel(application: Application) : AndroidViewModel(applic
         usuarios = repository.todosLosUsuarios
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
+                started = SharingStarted.WhileSubscribed(5000), // Corregido: WhileSubscribed
                 initialValue = emptyList()
             )
     }

@@ -1,3 +1,4 @@
+@file:Suppress("PackageName", "PackageDirectoryMismatch")
 package com.example.caso_dsy1105_002v_tacticaldev.Repository
 
 import com.example.caso_dsy1105_002v_tacticaldev.Database.VisitaDao

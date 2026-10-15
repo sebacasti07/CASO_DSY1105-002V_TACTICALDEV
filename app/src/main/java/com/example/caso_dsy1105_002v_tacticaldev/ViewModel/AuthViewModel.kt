@@ -83,9 +83,4 @@ class AuthViewModel(private val usuarioDao: UsuarioDao) : ViewModel() {
         usuarioActual = null
         _uiState.value = AuthUiState.Idle
     }
-    fun limpiarEstado() {
-        _uiState.value = AuthUiState.Idle
-    }
-
-
 }

@@ -17,5 +17,5 @@ data class AsistenciaRemota(
     val enlaceReunion: String = "",
     val motivoCancelacion: String = "",
     val motivoReprogramacion: String = "",
-    val fotosUrls: String = ""
+    val fotosUrls: String = "" // <-- Evidencia enviada al Técnico
 )

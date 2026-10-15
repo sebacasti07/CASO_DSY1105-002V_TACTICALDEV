@@ -1,3 +1,4 @@
+@file:Suppress("PackageName", "PackageDirectoryMismatch")
 package com.example.caso_dsy1105_002v_tacticaldev.Model
 
 import androidx.room.Entity
@@ -18,5 +19,5 @@ data class Visita(
     val motivoCancelacion: String = "",
     val motivoReprogramacion: String = "",
     val ubicacionGps: String = "",
-    val fotosUrls: String = ""
+    val fotosUrls: String = "" // <-- Evidencia enviada al Técnico
 )

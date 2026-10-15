@@ -2,10 +2,29 @@ package com.example.caso_dsy1105_002v_tacticaldev.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// --- PALETA REFRIGERACIÓN / HIELO ---
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Colores Primarios (Azul Marino Frío y Celeste Hielo)
+val AzulMarinoPrinciapl = Color(0xFF004E7C)       // Azul marino profundo y técnico
+val CelesteHieloBrillante = Color(0xFF38B6FF)     // Celeste brillante para destacados
+val ContenedorCelesteHielo = Color(0xFFD2E8FF)    // Fondo celeste claro suave para tarjetas/paneles
+val TextoContenedorAzul = Color(0xFF001D33)       // Texto oscuro sobre celeste
+
+// Colores Secundarios (Gris Glacial y Turquesa Frío)
+val AzulGlacialSecundario = Color(0xFF4A6273)
+val ContenedorAzulGlacial = Color(0xFFD5E7F5)
+
+// Colores Terciarios (Cian Cristalino / Hielo)
+val CianHieloTerciario = Color(0xFF006973)
+val ContenedorCianHielo = Color(0xFF93F2FF)
+
+// Fondos y Superficies (Blanco Glacial)
+val FondoBlancoGlacial = Color(0xFFF4F9FC)        // Blanco con un toque muy leve de hielo
+val SuperficieBlanca = Color(0xFFFAFDFF)
+val VarianteSuperficieCeleste = Color(0xFFE0ECF8)
+
+// MODO OSCURO (DARK MODE REFRIGERACIÓN)
+val CelesteHieloDark = Color(0xFF80CBFF)
+val ContenedorAzulDark = Color(0xFF003454)
+val FondoOscuroGlacial = Color(0xFF0C141C)
+val SuperficieOscuraGlacial = Color(0xFF101A24)
