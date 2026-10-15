@@ -20,10 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             CASO_DSY1105002V_TACTICALDEVTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    androidx.compose.foundation.layout.Box(
                         modifier = Modifier.padding(innerPadding)
-                    )
                 }
             }
         }
