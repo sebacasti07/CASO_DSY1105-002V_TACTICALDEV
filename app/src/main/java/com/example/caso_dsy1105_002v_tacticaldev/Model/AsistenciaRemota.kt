@@ -9,6 +9,7 @@ data class AsistenciaRemota(
     val equipoId: String,
     val DescripcionFalla: String,
     val herramientasRequeridas: String,
+
     val repuestoRequeridoId: String? = null,
     val fecha: Long = System.currentTimeMillis()
 )

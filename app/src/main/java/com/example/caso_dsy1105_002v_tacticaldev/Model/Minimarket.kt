@@ -5,9 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "minimarkets")
 data class Minimarket(
-    @PrimaryKey val minimarketId: String, // Clave primaria explícita (ej: "MM-SANTIAGO-01")
-    val nombre: String,
-    val direccion: String,
-    val ciudad: String,
-    val clienteId: String
+    @PrimaryKey
+    val minimarketId: String,
+    val rutCliente: String = "",
+    val rutComercial: String = "",
+    val nombre: String = "",
+    val direccion: String = "",
+    val telefono: String? = null
 )
