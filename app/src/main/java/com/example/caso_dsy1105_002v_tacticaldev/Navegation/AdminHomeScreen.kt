@@ -1,36 +1,66 @@
-package com.example.caso_dsy1105_002v_tacticaldev.View
+@file:Suppress("PackageName")
+package com.example.caso_dsy1105_002v_tacticaldev.Navigation
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.caso_dsy1105_002v_tacticaldev.ViewModel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminHomeScreen(
-    onNavigateToUsuarios: () -> Unit,
-    onNavigateToInventario: () -> Unit,
-    onNavigateToVentas: () -> Unit,
-    onNavigateToCompraStock: () -> Unit,
-    onNavigateToVisitas: () -> Unit,
-    onNavigateToVisitaRemota: () -> Unit,
-    onLogout: () -> Unit
+    authViewModel: AuthViewModel,
+    onNavigateTo: (String) -> Unit,
+    onCerrarSesion: () -> Unit
 ) {
+    val usuario = authViewModel.usuarioActual
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Panel de Administración Central") },
+                title = { Text("Panel de Administración") },
                 actions = {
-                    IconButton(onClick = onLogout) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Cerrar Sesión")
+                    IconButton(onClick = {
+                        authViewModel.cerrarSesion()
+                        onCerrarSesion()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = "Cerrar Sesión"
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -46,80 +76,80 @@ fun AdminHomeScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = "Bienvenido, ${usuario?.primerNombre ?: "Administrador"}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Gestión centralizada del sistema TacticalDEV",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+
             Text(
-                text = "Módulos de Gestión TacticalDEV",
-                style = MaterialTheme.typography.titleLarge,
+                text = "Módulos Principales",
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
 
-            // 1. Gestión de Usuarios
-            AdminMenuCard(
+            AdminMenuOption(
                 titulo = "Gestión de Usuarios",
-                descripcion = "Crear, editar, filtrar y eliminar cuentas (Técnicos, Clientes, Vendedores, Transportistas).",
+                subtitulo = "Crear, editar y eliminar cuentas de usuarios",
                 icono = Icons.Default.Person,
-                onClick = onNavigateToUsuarios
+                onClick = { onNavigateTo(Screen.AdminUsuarios.route) }
             )
 
-            // 2. Gestión de Inventario
-            AdminMenuCard(
+            AdminMenuOption(
                 titulo = "Gestión de Inventario",
-                descripcion = "Administrar repuestos, ubicaciones en bodegas y cantidades disponibles.",
-                icono = Icons.Default.List,
-                onClick = onNavigateToInventario
+                subtitulo = "Control de repuestos, stock y precios",
+                icono = Icons.Default.Build,
+                onClick = { onNavigateTo(Screen.AdminInventario.route) }
             )
 
-            // 3. Gestión de Ventas
-            AdminMenuCard(
-                titulo = "Gestión de Ventas",
-                descripcion = "Registrar ventas de repuestos, montos, clientes y consultar historial.",
+            AdminMenuOption(
+                titulo = "Registro de Compras / Stock",
+                subtitulo = "Ingreso de nuevos repuestos al almacén",
                 icono = Icons.Default.ShoppingCart,
-                onClick = onNavigateToVentas
+                onClick = { onNavigateTo(Screen.AdminCompraStock.route) }
             )
 
-            // 4. Gestión de Compra Stock
-            AdminMenuCard(
-                titulo = "Gestión de Compra Stock",
-                descripcion = "Órdenes de compra a proveedores, recepción de repuestos y reabastecimiento.",
-                icono = Icons.Default.AddCircle,
-                onClick = onNavigateToCompraStock
+            AdminMenuOption(
+                titulo = "Supervisión de Ventas",
+                subtitulo = "Historial global de ventas realizadas",
+                icono = Icons.Default.DateRange,
+                onClick = { onNavigateTo(Screen.AdminVentas.route) }
             )
 
-            // 5. Gestión de Visitas Terreno
-            AdminMenuCard(
-                titulo = "Gestión de Visitas Terreno",
-                descripcion = "Supervisión de visitas técnicas, observaciones y fotografías registradas.",
+            AdminMenuOption(
+                titulo = "Visitas Técnicas",
+                subtitulo = "Control e historial de mantenimientos en terreno",
                 icono = Icons.Default.LocationOn,
-                onClick = onNavigateToVisitas
+                onClick = { onNavigateTo(Screen.AdminVisitas.route) }
             )
 
-            // 6. Gestión de Visita Remota
-            AdminMenuCard(
-                titulo = "Gestión de Visita Remota",
-                descripcion = "Salas virtuales de asistencia técnica a distancia y diagnósticos remotos.",
-                icono = Icons.Default.Phone,
-                onClick = onNavigateToVisitaRemota
+            AdminMenuOption(
+                titulo = "Monitoreo Remoto",
+                subtitulo = "Salas remotas de soporte para técnicos",
+                icono = Icons.Default.PlayArrow,
+                onClick = { onNavigateTo(Screen.AdminVisitasRemotas.route) }
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            OutlinedButton(
-                onClick = onLogout,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(Icons.Default.ExitToApp, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Cerrar Sesión")
-            }
         }
     }
 }
 
 @Composable
-private fun AdminMenuCard(
+fun AdminMenuOption(
     titulo: String,
-    descripcion: String,
+    subtitulo: String,
     icono: ImageVector,
     onClick: () -> Unit
 ) {
@@ -137,18 +167,18 @@ private fun AdminMenuCard(
             Icon(
                 imageVector = icono,
                 contentDescription = null,
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = titulo,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
                 )
                 Text(
-                    text = descripcion,
+                    text = subtitulo,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

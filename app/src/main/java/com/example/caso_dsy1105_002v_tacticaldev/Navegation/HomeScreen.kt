@@ -1,57 +1,60 @@
-package com.example.caso_dsy1105_002v_tacticaldev.View
+@file:Suppress("PackageName")
+package com.example.caso_dsy1105_002v_tacticaldev.Navigation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.caso_dsy1105_002v_tacticaldev.ViewModel.AuthUiState
+import androidx.compose.ui.unit.sp
 import com.example.caso_dsy1105_002v_tacticaldev.ViewModel.AuthViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     authViewModel: AuthViewModel,
-    onLogout: () -> Unit
+    onCerrarSesion: () -> Unit
 ) {
-    val uiState by authViewModel.uiState.collectAsState()
+    val usuario = authViewModel.usuarioActual
 
-    // Obtener el usuario desde el estado Success o desde la propiedad usuarioActual
-    val usuario = (uiState as? AuthUiState.Success)?.usuario ?: authViewModel.usuarioActual
-
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Inicio - TacticalDEV") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Text(
+                text = "¡Bienvenido/a!",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             if (usuario != null) {
                 Text(
-                    text = "Bienvenido, ${usuario.primerNombre} ${usuario.apellido}",
-                    style = MaterialTheme.typography.headlineMedium
+                    text = "${usuario.primerNombre} ${usuario.apellido}",
+                    style = MaterialTheme.typography.titleMedium
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "RUT: ${usuario.rut}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
                 Text(
                     text = "Rol: ${usuario.rol.name}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            } else {
-                Text(
-                    text = "Cargando datos de usuario...",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
 
@@ -60,9 +63,11 @@ fun HomeScreen(
             Button(
                 onClick = {
                     authViewModel.cerrarSesion()
-                    onLogout()
+                    onCerrarSesion()
                 },
-                modifier = Modifier.fillMaxWidth()
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
             ) {
                 Text("Cerrar Sesión")
             }
