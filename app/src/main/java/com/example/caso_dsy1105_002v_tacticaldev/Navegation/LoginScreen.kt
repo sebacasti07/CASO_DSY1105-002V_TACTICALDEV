@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -23,6 +24,7 @@ fun LoginScreen(
     authViewModel: AuthViewModel,
     onLoginSuccess: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     var correo by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
