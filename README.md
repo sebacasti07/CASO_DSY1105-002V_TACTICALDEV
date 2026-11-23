@@ -123,4 +123,4 @@ La aplicación cuenta con firma digital autónoma configurada para compilación 
 
 ## 📸 Evidencia de Firma Release y Keystore
 
-![Evidencia de Firma Release y Keystore](privado)
+Evidencia privada
