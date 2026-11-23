@@ -80,7 +80,25 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 
 ## 🔑 Credenciales de Prueba por Defecto
 
-- **Administrador**: privadas
+- **Administrador**: `admin@admindev.cl` / `Admin1234@`
+
+---
+
+## 🛠️ Pasos de Ejecución
+
+### 1. Ejecutar Backend (Spring Boot)
+1. Navega a la carpeta `backend/` desde la terminal.
+2. Ejecuta el servidor con Maven Wrapper:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+   *(En Windows: `mvnw.cmd spring-boot:run`)*
+3. Verifica la disponibilidad del backend en `http://localhost:8080/api/usuarios`.
+
+### 2. Compilar y Ejecutar la Aplicación Android
+1. Abre el proyecto en **Android Studio**.
+2. Sincroniza las dependencias Gradle.
+3. Ejecuta la aplicación en un Emulador o Dispositivo Físico (`Shift + F10`).
 
 ---
 
@@ -105,4 +123,4 @@ La aplicación cuenta con firma digital autónoma configurada para compilación 
 
 ## 📸 Evidencia de Firma Release y Keystore
 
-Evidencia privada
+![Evidencia de Firma Release y Keystore](evidencia_firma.png)
