@@ -1,6 +1,6 @@
 # TacticalDEV - Sistema de Gestión y Mantención de Equipos de Refrigeración
 
-Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arquitectura **MVVM (Model-View-ViewModel)**, conectada a una base de datos local **Room (SQLite)** y con sincronización híbrida vía **Retrofit** hacia un backend en **Spring Boot 3.3.5**.
+Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arquitectura **MVVM (Model-View-ViewModel)**, conectada a una base de datos local **Room (SQLite)** y con sincronización híbrida vía **Retrofit** hacia un backend en **Spring Boot 3.3.5** desplegado en **AWS EC2**.
 
 ---
 
@@ -19,7 +19,8 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 
 ## ⚙️ Arquitectura y Tecnologías
 - **Frontend / Móvil**: Android SDK (Kotlin, Jetpack Compose, Material 3, Coroutines & Flow, Room Database, Retrofit 2, OkHttp3, ViewModelFactory, Navigation Compose).
-- **Backend**: Spring Boot 3.3.5, Spring Data JPA, H2 Database (persistencia en archivo local), Swagger / OpenAPI 3.
+- **Backend**: Spring Boot 3.3.5, Spring Data JPA, H2 Database (persistencia en archivo local `./data/tacticaldev_db`), Swagger / OpenAPI 3.
+- **Infraestructura Cloud**: AWS EC2 (Amazon Linux 2023), IP Elástica (`100.27.237.93`), puerto `8080` y arranque automático gestionado mediante servicio `systemd` (`tacticaldev.service`).
 - **Firma Release**: Keystore JKS (`app/tacticaldev.jks`) y `keystore.properties`.
 
 ---
@@ -60,7 +61,7 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 
 ## 🌐 Endpoints y Servicios Web
 
-### 1. Endpoints Backend Spring Boot (`http://10.0.2.2:8080/api/` o `http://localhost:8080/api/`)
+### 1. Endpoints Backend Spring Boot (`http://100.27.237.93:8080/api/`)
 - `/api/usuarios`: Gestión de cuentas de usuario y autenticación.
 - `/api/inventario`: Inventario de repuestos e insumos.
 - `/api/equipos`: Registro y estado de equipos de refrigeración.
@@ -70,7 +71,10 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 - `/api/minimarkets`: Registro de clientes y minimarkets asociados.
 - `/api/ordenes-compra`: Órdenes de compra de stock a proveedores.
 
-**Documentación Swagger UI**: `http://localhost:8080/swagger-ui/index.html`
+**Documentación Swagger UI**: `http://100.27.237.93:8080/swagger-ui/index.html`  
+**Consola Web H2 Database**: `http://100.27.237.93:8080/h2-console`  
+- **JDBC URL**: `jdbc:h2:file:./data/tacticaldev_db`
+- **Usuario**: `sa`
 
 ### 2. API Externa
 - **Servicio**: `https://mindicador.cl/api`
@@ -86,19 +90,18 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 
 ## 🛠️ Pasos de Ejecución
 
-### 1. Ejecutar Backend (Spring Boot)
-1. Navega a la carpeta `backend/` desde la terminal.
-2. Ejecuta el servidor con Maven Wrapper:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-   *(En Windows: `mvnw.cmd spring-boot:run`)*
-3. Verifica la disponibilidad del backend en `http://localhost:8080/api/usuarios`.
+### 1. Backend en Producción (AWS EC2)
+1. Inicia la instancia EC2 en AWS y verifica que la IP Elástica `100.27.237.93` esté asociada.
+2. El servicio `tacticaldev.service` en `systemd` inicia automáticamente el servidor Spring Boot (`backend-0.0.1-SNAPSHOT.jar`) en el puerto `8080` con acceso remoto a H2 habilitado.
+3. Verifica la disponibilidad del servicio en `http://100.27.237.93:8080/api/usuarios` o desde `http://100.27.237.93:8080/h2-console`.
+
+*(Opcional — Ejecución local: navega a `backend/` y ejecuta `./mvnw spring-boot:run` o `mvnw.cmd spring-boot:run` en Windows para levantarlo en `http://localhost:8080`).*
 
 ### 2. Compilar y Ejecutar la Aplicación Android
 1. Abre el proyecto en **Android Studio**.
-2. Sincroniza las dependencias Gradle.
-3. Ejecuta la aplicación en un Emulador o Dispositivo Físico (`Shift + F10`).
+2. Verifica en `RetrofitClient.kt` que la URL base apunte a `http://100.27.237.93:8080/`.
+3. Sincroniza las dependencias Gradle.
+4. Ejecuta la aplicación en un Emulador o Dispositivo Físico con acceso a internet (`Shift + F10`).
 
 ---
 
@@ -121,6 +124,4 @@ La aplicación cuenta con firma digital autónoma configurada para compilación 
 
 ---
 
-## 📸 Evidencia de Firma Release y Keystore
-
-![Evidencia de Firma Release y Keystore](evidencia_firma.png)
+##  Firma Release y Keystore
