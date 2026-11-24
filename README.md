@@ -84,7 +84,7 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 
 ## 🔑 Credenciales de Prueba por Defecto
 
-- **Administrador**: `admin@admindev.cl` / `Admin1234@`
+- **Administrador**: privada
 
 ---
 
@@ -95,7 +95,7 @@ Aplicación móvil desarrollada en **Kotlin** y **Jetpack Compose** bajo la arqu
 2. El servicio `tacticaldev.service` en `systemd` inicia automáticamente el servidor Spring Boot (`backend-0.0.1-SNAPSHOT.jar`) en el puerto `8080` con acceso remoto a H2 habilitado.
 3. Verifica la disponibilidad del servicio en `http://100.27.237.93:8080/api/usuarios` o desde `http://100.27.237.93:8080/h2-console`.
 
-*(Opcional — Ejecución local: navega a `backend/` y ejecuta `./mvnw spring-boot:run` o `mvnw.cmd spring-boot:run` en Windows para levantarlo en `http://localhost:8080`).*
+
 
 ### 2. Compilar y Ejecutar la Aplicación Android
 1. Abre el proyecto en **Android Studio**.
