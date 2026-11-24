@@ -6,17 +6,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
+    private const val BASE_URL_SPRING = "http://100.27.237.93:8080/api/"
+
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .connectTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+        .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
         .build()
 
     val springBootService: TacticalApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080/api/")
+            .baseUrl(BASE_URL_SPRING)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

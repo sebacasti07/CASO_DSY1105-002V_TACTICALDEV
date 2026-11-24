@@ -151,6 +151,12 @@ fun AppNavGraph(
             val listaUsuarios by adminUsuariosViewModel.usuarios.collectAsState()
             val listaMinimarkets: List<Minimarket> by minimarketDao.obtenerTodosLosMinimarkets().collectAsState(initial = emptyList())
 
+            LaunchedEffect(Unit) {
+                coroutineScope.launch {
+                    usuarioRepository.sincronizarConApi()
+                }
+            }
+
             AdminUsuariosScreen(
                 listaUsuarios = listaUsuarios,
                 listaMinimarkets = listaMinimarkets,
@@ -187,6 +193,12 @@ fun AppNavGraph(
         composable(Screen.AdminInventario.route) {
             val repuestoViewModel: RepuestoViewModel = viewModel(factory = viewModelFactory)
             val listaInventario by repuestoViewModel.listaInventario.collectAsState()
+
+            LaunchedEffect(Unit) {
+                coroutineScope.launch {
+                    repuestoRepository.sincronizarConApi()
+                }
+            }
 
             AdminInventarioScreen(
                 listaInventario = listaInventario,
@@ -319,6 +331,12 @@ fun AppNavGraph(
         composable(Screen.ClienteCatalogoEquipos.route) {
             val repuestoViewModel: RepuestoViewModel = viewModel(factory = viewModelFactory)
             val listaInventario by repuestoViewModel.listaInventario.collectAsState()
+
+            LaunchedEffect(Unit) {
+                coroutineScope.launch {
+                    repuestoRepository.sincronizarConApi()
+                }
+            }
 
             ClienteCatalogoEquiposScreen(
                 listaInventario = listaInventario,
@@ -538,6 +556,12 @@ fun AppNavGraph(
         composable(Screen.VendedorInventario.route) {
             val repuestoViewModel: RepuestoViewModel = viewModel(factory = viewModelFactory)
             val listaInventario by repuestoViewModel.listaInventario.collectAsState()
+
+            LaunchedEffect(Unit) {
+                coroutineScope.launch {
+                    repuestoRepository.sincronizarConApi()
+                }
+            }
 
             VendedorInventarioScreen(
                 listaInventario = listaInventario,

@@ -27,41 +27,66 @@ class EquipoRepository(
     }
 
     suspend fun insertarEquipo(equipo: EquipoRefrigeracion) {
-        equipoDao.insertarEquipo(equipo)
         try {
-            apiService.insertarEquipo(equipo)
+            val response = apiService.insertarEquipo(equipo)
+            if (response.isSuccessful) {
+                equipoDao.insertarEquipo(equipo)
+                sincronizarConApi()
+            } else {
+                equipoDao.insertarEquipo(equipo)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            equipoDao.insertarEquipo(equipo)
         }
     }
 
     suspend fun actualizarEquipo(equipo: EquipoRefrigeracion) {
-        equipoDao.actualizarEquipo(equipo)
         try {
-            apiService.actualizarEquipo(equipo)
+            val response = apiService.actualizarEquipo(equipo)
+            if (response.isSuccessful) {
+                equipoDao.actualizarEquipo(equipo)
+                sincronizarConApi()
+            } else {
+                equipoDao.actualizarEquipo(equipo)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            equipoDao.actualizarEquipo(equipo)
         }
     }
 
     suspend fun actualizarEstado(equipoId: String, estado: String) {
-        equipoDao.actualizarEstado(equipoId, estado)
         val equipo = equipoDao.obtenerPorCodigo(equipoId)
         if (equipo != null) {
+            val equipoActualizado = equipo.copy(estadoOperativo = estado)
             try {
-                apiService.actualizarEquipo(equipo)
+                val response = apiService.actualizarEquipo(equipoActualizado)
+                if (response.isSuccessful) {
+                    equipoDao.actualizarEstado(equipoId, estado)
+                    sincronizarConApi()
+                } else {
+                    equipoDao.actualizarEstado(equipoId, estado)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
+                equipoDao.actualizarEstado(equipoId, estado)
             }
         }
     }
 
     suspend fun eliminarEquipo(equipo: EquipoRefrigeracion) {
-        equipoDao.eliminarEquipo(equipo)
         try {
-            apiService.eliminarEquipo(equipo.equipoId)
+            val response = apiService.eliminarEquipo(equipo.equipoId)
+            if (response.isSuccessful) {
+                equipoDao.eliminarEquipo(equipo)
+                sincronizarConApi()
+            } else {
+                equipoDao.eliminarEquipo(equipo)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            equipoDao.eliminarEquipo(equipo)
         }
     }
 

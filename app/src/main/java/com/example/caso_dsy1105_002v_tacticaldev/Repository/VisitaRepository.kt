@@ -23,29 +23,47 @@ class VisitaRepository(
     }
 
     suspend fun insertarVisita(visita: Visita) {
-        visitaDao.insertarVisita(visita)
         try {
-            apiService.insertarVisita(visita)
+            val response = apiService.insertarVisita(visita)
+            if (response.isSuccessful) {
+                visitaDao.insertarVisita(visita)
+                sincronizarConApi()
+            } else {
+                visitaDao.insertarVisita(visita)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            visitaDao.insertarVisita(visita)
         }
     }
 
     suspend fun actualizarVisita(visita: Visita) {
-        visitaDao.actualizarVisita(visita)
         try {
-            apiService.actualizarVisita(visita)
+            val response = apiService.actualizarVisita(visita)
+            if (response.isSuccessful) {
+                visitaDao.actualizarVisita(visita)
+                sincronizarConApi()
+            } else {
+                visitaDao.actualizarVisita(visita)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            visitaDao.actualizarVisita(visita)
         }
     }
 
     suspend fun eliminarVisita(visita: Visita) {
-        visitaDao.eliminarVisita(visita)
         try {
-            apiService.eliminarVisita(visita.visitaId)
+            val response = apiService.eliminarVisita(visita.visitaId)
+            if (response.isSuccessful) {
+                visitaDao.eliminarVisita(visita)
+                sincronizarConApi()
+            } else {
+                visitaDao.eliminarVisita(visita)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            visitaDao.eliminarVisita(visita)
         }
     }
 

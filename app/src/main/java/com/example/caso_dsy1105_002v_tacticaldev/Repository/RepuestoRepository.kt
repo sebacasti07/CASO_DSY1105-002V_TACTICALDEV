@@ -46,11 +46,17 @@ class RepuestoRepository(
     }
 
     suspend fun insertarRepuesto(inventario: InventarioRepuesto) {
-        repuestoDao.insertarInventario(inventario)
         try {
-            apiService.insertarInventario(inventario)
+            val response = apiService.insertarInventario(inventario)
+            if (response.isSuccessful) {
+                repuestoDao.insertarInventario(inventario)
+                sincronizarConApi()
+            } else {
+                repuestoDao.insertarInventario(inventario)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            repuestoDao.insertarInventario(inventario)
         }
     }
 
@@ -75,11 +81,17 @@ class RepuestoRepository(
     }
 
     suspend fun actualizarStock(inventario: InventarioRepuesto) {
-        repuestoDao.actualizarInventario(inventario)
         try {
-            apiService.actualizarInventario(inventario)
+            val response = apiService.actualizarInventario(inventario)
+            if (response.isSuccessful) {
+                repuestoDao.actualizarInventario(inventario)
+                sincronizarConApi()
+            } else {
+                repuestoDao.actualizarInventario(inventario)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            repuestoDao.actualizarInventario(inventario)
         }
     }
 
@@ -106,20 +118,21 @@ class RepuestoRepository(
     }
 
     suspend fun actualizarInventario(inventario: InventarioRepuesto) {
-        repuestoDao.actualizarInventario(inventario)
-        try {
-            apiService.actualizarInventario(inventario)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        actualizarStock(inventario)
     }
 
     suspend fun eliminarInventario(inventario: InventarioRepuesto) {
-        repuestoDao.eliminarInventario(inventario)
         try {
-            apiService.eliminarInventario(inventario.inventarioId)
+            val response = apiService.eliminarInventario(inventario.inventarioId)
+            if (response.isSuccessful) {
+                repuestoDao.eliminarInventario(inventario)
+                sincronizarConApi()
+            } else {
+                repuestoDao.eliminarInventario(inventario)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            repuestoDao.eliminarInventario(inventario)
         }
     }
 

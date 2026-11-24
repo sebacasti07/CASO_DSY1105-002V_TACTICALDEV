@@ -23,20 +23,32 @@ class UsuarioRepository(
     }
 
     suspend fun insertarUsuario(usuario: Usuario) {
-        usuarioDao.insertarUsuario(usuario)
         try {
-            apiService.insertarUsuario(usuario)
+            val response = apiService.insertarUsuario(usuario)
+            if (response.isSuccessful) {
+                usuarioDao.insertarUsuario(usuario)
+                sincronizarConApi()
+            } else {
+                usuarioDao.insertarUsuario(usuario)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            usuarioDao.insertarUsuario(usuario)
         }
     }
 
     suspend fun eliminarUsuario(usuario: Usuario) {
-        usuarioDao.eliminarUsuario(usuario)
         try {
-            apiService.eliminarUsuario(usuario.usuarioId)
+            val response = apiService.eliminarUsuario(usuario.usuarioId)
+            if (response.isSuccessful) {
+                usuarioDao.eliminarUsuario(usuario)
+                sincronizarConApi()
+            } else {
+                usuarioDao.eliminarUsuario(usuario)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+            usuarioDao.eliminarUsuario(usuario)
         }
     }
 
